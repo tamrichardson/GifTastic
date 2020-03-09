@@ -1,35 +1,74 @@
-// Initial array of movies
-var foods = ["Apple", "Banana", "Tacos", "Cheeseburgers"];
+// array of foods
+var foods = ["Pizza", "Banana", "Tacos", "Cheeseburgers", "Pie", "Spaghetti"];
 
-// Generic function for capturing the movie name from the data-attribute
+// this is a function for capturing the food names from the data-attribute
 function alertFoodName() {
-  var movieName = $(this).attr("data-name");
+  var food = $(this).attr("data-name");
 
+  //making the query URL with endpoint + key value pairs and api key
+  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+    food + "&api_key=IRQP9t5IFrEkWl7y1LiJoQR8IUUKqF64&limit=10";
 
-  alert(foodName);
+  // AJAX request with the queryURL
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  })
+
+    //after the data comes back from the request
+    .then(function (response) {
+      console.log(queryURL)
+      //show the results in the console
+      console.log(response)
+
+      //storing the data from the AJAX request in the results variable
+      var results = response.data;
+
+      //looping throught each result
+      for (var i = 0; i < results.length; i++) {
+        //creating and storing a div tag
+        var foodDiv = $("<div>");
+
+        // creating a paragraph tag with the result items rating
+        var p = $("<p>").text("Rating: " + results[i].rating);
+
+        // Creating and storing an image tag
+        var foodImage = $("<img>");
+
+        // Setting the source attribute of the image to a property pulled off the result item (response - data - images - fixed_height - url)
+        foodImage.attr("src", results[i].images.fixed_height.url)
+
+        // Appending the paragraph and image tag to the foodDiv
+        foodDiv.append(p);
+        foodDiv.append(foodImage)
+
+        // Prepending the foodDiv to the HTML page in the "#populate-gifs" div
+        $("#populate-gifs").prepend(foodDiv);
+      }
+    })
+
 }
 
-// Function for displaying movie data
+// this is a function for displaying food data
 function generateButtons() {
 
-  // Deleting the movies prior to adding new movies
-  // (this is necessary otherwise we will have repeat buttons)
+  // we need to delete the foods prior to adding new foods so that we dont end up with repeat buttons
   $("#buttons-view").empty();
 
-  // Looping through the array of movies
-  for (var i = 0; i < foods.length; i++) {
+  // Looping through the array of foods
+  for (var j = 0; j < foods.length; j++) {
 
-    // Then dynamicaly generating buttons for each movie in the array
-    // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
-    var a = $("<button>");
-    // Adding a class of movie to our button
-    a.addClass("food");
+    // now we need to generate buttons for each food in the array
+    // This code $("<button>") creates the buttons
+    var foodList = $("<button>");
+    // Adding a class of food to our button
+    foodList.addClass("food");
     // Adding a data-attribute
-    a.attr("data-name", foods[i]);
+    foodList.attr("data-name", foods[j]);
     // Providing the initial button text
-    a.text(foods[i]);
+    foodList.text(foods[j]);
     // Adding the button to the HTML
-    $("#buttons-view").append(a);
+    $("#buttons-view").append(foodList);
   }
 }
 
@@ -43,38 +82,23 @@ $("#add-food").on("click", function (event) {
   // Adding the food from the textbox to our array
   foods.push(moreFood);
 
-  // Calling renderButtons which handles the processing of our movie array
+  // Calling generatButtons which handles the processing of our foods array
   generateButtons();
+
 
 });
 
-// Function for displaying the movie info
-// We're adding a click event listener to all elements with the class "movie"
+// Function for displaying the food info
+// We're adding a click event listener to all elements with the class "food"
 // We're adding the event listener to the document because it will work for dynamically generated elements
-// $(".movies").on("click") will only add listeners to elements that are on the page at that time
+// $(".foods").on("click") will only add listeners to elements that are on the page at that time
 $(document).on("click", ".food", alertFoodName);
 
-// Calling the renderButtons function to display the intial buttons
+// Calling the generatedButtons function to display the intial buttons
 generateButtons();
+alertFoodName()
 
 
-// Performing an AJAX request with the queryURL
-//$.ajax({
-  //this is the url and key for the giphy api
-  //url: "http://api.giphy.com/v1/gifs/search?q=food&limit=10&api_key=IRQP9t5IFrEkWl7y1LiJoQR8IUUKqF64",
-  //type: "GET",
-  //success: function (response) {
 
-
-    // this loops through the data in the response
-   //for (var i = 0; i < response.data.length; i++) {
-      //console.log(response.data[i])
-
-      //grabbed the content div and created an image tag and the called the response data, the images, fixed_height, the url
-      //$("#content").append("<img src=" + response.data[i].images.fixed_height.url + ">")
-   // }
-
- // }
-//});
 
 

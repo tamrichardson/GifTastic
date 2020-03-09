@@ -1,3 +1,8 @@
 body {
     background-image: url(../images/pink_rice.png);
 }
+
+button{
+    background: salmon;
+    padding: 20px
+}
