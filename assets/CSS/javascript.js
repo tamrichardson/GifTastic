@@ -1,67 +1,80 @@
-// Initial array of foods
-var food = ["cake", "burger", "pizza", "taco"];
+// Initial array of movies
+var foods = ["Apple", "Banana", "Tacos", "Cheeseburgers"];
+
+// Generic function for capturing the movie name from the data-attribute
+function alertFoodName() {
+  var movieName = $(this).attr("data-name");
 
 
-$.ajax({
+  alert(foodName);
+}
 
-  url: "http://api.giphy.com/v1/gifs/search?q=food&limit=10&api_key=IRQP9t5IFrEkWl7y1LiJoQR8IUUKqF64",
-  type: "GET",
-  success: function (response) {
+// Function for displaying movie data
+function generateButtons() {
 
+  // Deleting the movies prior to adding new movies
+  // (this is necessary otherwise we will have repeat buttons)
+  $("#buttons-view").empty();
 
-    // this loops through the data in the result
-    for (var i = 0; i < response.data.length; i++) {
-      console.log(response.data[i])
+  // Looping through the array of movies
+  for (var i = 0; i < foods.length; i++) {
 
-      //grabbed the content div and created an image tag and the called the response data, the images, fixed_height, the url
-      $("#content").append("<img src=" + response.data[i].images.fixed_height.url + ">")
-    }
-
+    // Then dynamicaly generating buttons for each movie in the array
+    // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
+    var a = $("<button>");
+    // Adding a class of movie to our button
+    a.addClass("food");
+    // Adding a data-attribute
+    a.attr("data-name", foods[i]);
+    // Providing the initial button text
+    a.text(foods[i]);
+    // Adding the button to the HTML
+    $("#buttons-view").append(a);
   }
+}
+
+// This function handles events where one button is clicked
+$("#add-food").on("click", function (event) {
+  // Preventing the buttons default behavior when clicked (which is submitting a form)
+  event.preventDefault();
+  // This line grabs the input from the textbox
+  var moreFood = $("#food-input").val().trim();
+
+  // Adding the food from the textbox to our array
+  foods.push(moreFood);
+
+  // Calling renderButtons which handles the processing of our movie array
+  generateButtons();
+
 });
 
+// Function for displaying the movie info
+// We're adding a click event listener to all elements with the class "movie"
+// We're adding the event listener to the document because it will work for dynamically generated elements
+// $(".movies").on("click") will only add listeners to elements that are on the page at that time
+$(document).on("click", ".food", alertFoodName);
 
-//this is creating a button with click function that calls the giphy API
-// attaches an event to clicking on the thing with the cat-button
-//$("#food-button").on("click", function () {
+// Calling the renderButtons function to display the intial buttons
+generateButtons();
 
+
+// Performing an AJAX request with the queryURL
+//$.ajax({
   //this is the url and key for the giphy api
-  //var queryURL = "http://api.giphy.com/v1/gifs/search?q=food&limit=10&api_key=IRQP9t5IFrEkWl7y1LiJoQR8IUUKqF64";
-
-  // Performing an AJAX request with the queryURL
-  //$.ajax({
-   // url: queryURL,
-   // method: "GET"
-  //})
-
-    //when the response returns asunchronously this line is a function accessing the response from the ajax query
-   //.then(function (response) {
-
-      // storing the data from the AJAX request in the results variable
-
-     // var results = response.data;
-      // Looping through each result item
-      //for (var i = 0; i < results.length; i++) {
-       // var gifDiv = $("<div>");
-
-        //var rating = results[i].rating;
-
-        // Creating a paragraph tag with the result item's rating
-        //var p = $("<p>").text("Rating: " + rating);
+  //url: "http://api.giphy.com/v1/gifs/search?q=food&limit=10&api_key=IRQP9t5IFrEkWl7y1LiJoQR8IUUKqF64",
+  //type: "GET",
+  //success: function (response) {
 
 
-        // Creating and storing an image tag
-        //var foodImage = $("<img>");
+    // this loops through the data in the response
+   //for (var i = 0; i < response.data.length; i++) {
+      //console.log(response.data[i])
 
-        // Setting the src attribute of the image to a property pulled off the result item
-        //foodImage.attr("src", results[i].//images.fixed_height.url);
+      //grabbed the content div and created an image tag and the called the response data, the images, fixed_height, the url
+      //$("#content").append("<img src=" + response.data[i].images.fixed_height.url + ">")
+   // }
 
-        // Appending the paragraph and image tag to the animalDiv
-        //gifDiv.prepend(p);
-        //gifDiv.prepend(foodImage);
-
-        // Prependng the foodDiv to the HTML page in the "#gifs-appear-here" div
-        //$("#gifs-appear-here").prepend(gifDiv);
-     // }
-    //});
+ // }
 //});
+
+
