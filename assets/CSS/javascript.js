@@ -36,7 +36,8 @@ function alertFoodName() {
         var foodImage = $("<img>").addClass("gif");
 
         // Setting the source attribute of the image to a property pulled off the result item (response - data - images - fixed_height - url)
-        foodImage.attr("src", results[i].images.fixed_height.url)
+        foodImage.attr("src", results[i].images.fixed_height_still.url)
+        // setting still and animate attribute
         foodImage.attr("data-still", results[i].images.fixed_height_still.url)
         foodImage.attr("data-animate", results[i].images.fixed_height.url);
 
