@@ -30,16 +30,21 @@ function alertFoodName() {
         var foodDiv = $("<div>");
 
         // creating a paragraph tag with the result items rating
-        var p = $("<p>").text("Rating: " + results[i].rating);
+        var p = $("<p>").text("Rating: " + results[i].rating + " click to play, click again to pause!");
 
         // Creating and storing an image tag
         var foodImage = $("<img>").addClass("gif");
 
         // Setting the source attribute of the image to a property pulled off the result item (response - data - images - fixed_height - url)
         foodImage.attr("src", results[i].images.fixed_height_still.url)
-        // setting still and animate attribute
-        foodImage.attr("data-still", results[i].images.fixed_height_still.url)
+
+        //setting data-animate attribute
         foodImage.attr("data-animate", results[i].images.fixed_height.url);
+
+        // setting data-still attribute
+        foodImage.attr("data-still", results[i].images.fixed_height_still.url)
+
+        foodImage.attr("data-state", "still");
 
         // Appending the paragraph and image tag to the foodDiv
         foodDiv.append(p);
