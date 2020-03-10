@@ -4,5 +4,6 @@ body {
 
 button{
     background: salmon;
-    padding: 20px
+    padding: 20px;
+    margin: 20px;
 }

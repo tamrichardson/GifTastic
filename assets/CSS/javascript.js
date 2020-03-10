@@ -33,10 +33,12 @@ function alertFoodName() {
         var p = $("<p>").text("Rating: " + results[i].rating);
 
         // Creating and storing an image tag
-        var foodImage = $("<img>");
+        var foodImage = $("<img>").addClass("gif");
 
         // Setting the source attribute of the image to a property pulled off the result item (response - data - images - fixed_height - url)
         foodImage.attr("src", results[i].images.fixed_height.url)
+        foodImage.attr("data-still", results[i].images.fixed_height_still.url)
+        foodImage.attr("data-animate", results[i].images.fixed_height.url);
 
         // Appending the paragraph and image tag to the foodDiv
         foodDiv.append(p);
@@ -46,9 +48,7 @@ function alertFoodName() {
         $("#populate-gifs").prepend(foodDiv);
       }
     })
-
 }
-
 // this is a function for displaying food data
 function generateButtons() {
 
@@ -84,19 +84,35 @@ $("#add-food").on("click", function (event) {
 
   // Calling generatButtons which handles the processing of our foods array
   generateButtons();
-
-
 });
 
 // Function for displaying the food info
 // We're adding a click event listener to all elements with the class "food"
 // We're adding the event listener to the document because it will work for dynamically generated elements
 // $(".foods").on("click") will only add listeners to elements that are on the page at that time
-$(document).on("click", ".food", alertFoodName);
+$(document).on("click", ".food", alertFoodName)
+  ;
+$(document).on("click", ".gif", function () {
+  console.log("gif clicked");
+  // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+  var state = $(this).attr("data-state");
+  // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+  // Then, set the image's data-state to animate
+  // Else set src to the data-still value
+  if (state === "still") {
+    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("data-state", "animate");
+  } else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("data-state", "still");
+  }
+
+})
+
 
 // Calling the generatedButtons function to display the intial buttons
 generateButtons();
-alertFoodName()
+
 
 
 
